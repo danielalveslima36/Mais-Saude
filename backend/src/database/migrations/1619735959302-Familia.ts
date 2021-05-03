@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner, Table } from "typeorm";
+import { IsNull, MigrationInterface, QueryRunner, Table } from "typeorm";
 
 export class Familia1619735959302 implements MigrationInterface {
 
@@ -13,15 +13,17 @@ export class Familia1619735959302 implements MigrationInterface {
                 },
                 {
                     name: 'nome',
-                    type: 'varchar'
+                    type: 'varchar',
                 },
                 {
                     name: 'chefe_id',
-                    type: 'uuid'
+                    type: 'uuid',
+                    isNullable: true 
                 },
                 {
                     name: 'endereco_id',
-                    type: 'uuid'
+                    type: 'uuid',
+                    isNullable: true 
                 },
                 {
                     name: 'agente_id',
