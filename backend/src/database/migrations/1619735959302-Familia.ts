@@ -16,11 +16,6 @@ export class Familia1619735959302 implements MigrationInterface {
                     type: 'varchar',
                 },
                 {
-                    name: 'chefe_id',
-                    type: 'uuid',
-                    isNullable: true 
-                },
-                {
                     name: 'endereco_id',
                     type: 'uuid',
                     isNullable: true 
@@ -31,14 +26,6 @@ export class Familia1619735959302 implements MigrationInterface {
                 },
             ],
             foreignKeys: [
-                {
-                    name: 'FKChefe',
-                    referencedColumnNames: ['id'],
-                    referencedTableName: 'Pessoa',
-                    columnNames: ['chefe_id'],
-                    onDelete: 'CASCADE',
-                    onUpdate: 'CASCADE'
-                },
                 {
                     name: 'FKEndereco',
                     referencedColumnNames: ['id'],

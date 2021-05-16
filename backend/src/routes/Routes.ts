@@ -6,16 +6,23 @@ import ValidateUser from '../middleware/validations';
 import FamiliaController from '../controllers/FamiliaController';
 import AuthController from '../controllers/AuthController';
 import authMiddleware from '../middleware/AuthMiddleware';
+import ValidateFamilia from '../middleware/validations';
+import PessoaController from '../controllers/PessoaController';
 
 const router = Router();
 
 router.post('/usuario',ValidateUser,UsuarioController.criarUsuario)
-router.get('/usuario',authMiddleware, UsuarioController.listarUsuarios)
-router.get("/usuario/:id", UsuarioController.BuscarPorId)
+router.get('/usuario', UsuarioController.listarUsuarios)
+router.get("/usuario/:id", authMiddleware, UsuarioController.BuscarPorId)
 
-router.post('/familia/:agente_id', FamiliaController.CriarFamilia)
-router.get('/familia', FamiliaController.ListarFamilias)
-router.get('/familia/:id', FamiliaController.BuscarPorId)
+router.post('/familia/:agente_id', FamiliaController.criarFamilia)
+router.get('/familia', FamiliaController.listarFamilias)
+router.get('/familia/:id', authMiddleware, FamiliaController.buscarPorId)
+router.get('/familia/pessoas/:id', FamiliaController.listarPessoas)
+
+router.post('/pessoa', PessoaController.criarPessoa)
+router.get('/pessoa', PessoaController.listarPessoas)
+router.get('/pessoa/:id', PessoaController.buscarPorId)
 
 router.post('/auth', AuthController.authenticate)
 

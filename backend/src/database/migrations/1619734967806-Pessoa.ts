@@ -52,7 +52,11 @@ export class Pessoa1619734967806 implements MigrationInterface {
                     type: 'varchar'
                 },
                 {
-                    name: 'observações',
+                    name: 'isChefe',
+                    type: 'boolean'
+                },
+                {
+                    name: 'observacoes',
                     type: 'text'
                 },
                 {

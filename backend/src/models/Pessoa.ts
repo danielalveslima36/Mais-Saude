@@ -28,6 +28,8 @@ class Pessoa {
     @Column()
     foto: string;
     @Column()
+    isChefe: boolean;
+    @Column()
     observacoes: string;
     @Column()
     pai: string;
@@ -42,6 +44,9 @@ class Pessoa {
     constructor(parameters) {
         if (!this.id) {
             this.id = uuid()
+        }
+        if(!this.isChefe){
+            this.isChefe = false
         }
     }
 }

@@ -10,14 +10,9 @@ class Familia {
     @Column()
     nome:string;
     @Column()
-    chefe_id:string;
-    @Column()
     endereco_id:string;
     @Column()
     agente_id:string;
-    @OneToOne(()=>Pessoa)
-    @JoinColumn({name:'chefe_id'})
-    chefe:Pessoa;
     @OneToOne(()=>Endereco)
     @JoinColumn({name:'endereco_id'})
     Endereco:Endereco;
