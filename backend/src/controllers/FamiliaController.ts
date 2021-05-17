@@ -36,10 +36,10 @@ class FamiliaController {
     }
 
     async listarFamiliaPorAgente(req: Request, res: Response): Promise<Response> {
-        const {id} = req.params
+        const { id } = req.params
         const familiaRepository = getCustomRepository(FamiliaRepository);
         try {
-            const listaFamilias = await familiaRepository.find({agente_id:id})
+            const listaFamilias = await familiaRepository.find({ agente_id: id })
             return res.status(200).json(listaFamilias);
         } catch (error) {
             return res.status(400).json(error);
@@ -49,31 +49,32 @@ class FamiliaController {
     async buscarPorId(req: Request, res: Response): Promise<Response> {
         const { id } = req.params;
         const familiaRepository = getCustomRepository(FamiliaRepository);
-        const familia = await familiaRepository.findOne({ id })
-        if (!familia) {
-            return res.status(404).json({ error: 'Familia não encontrada' });
-        }
-        return res.status(200).json(familia)
-    }
-
-    async listarPessoas(req: Request, res: Response): Promise<Response> {
-        //Dados
-        const { id } = req.params
-        //Repository
-        const familiaRepository = getCustomRepository(FamiliaRepository)
-        const pessoaRepository = getCustomRepository(PessoaRepository)
-
+        const enderecoRepository = getCustomRepository(EnderecoRepository);
+        const pessoaRepository = getCustomRepository(PessoaRepository);
         try {
             const familia = await familiaRepository.findOne({ id })
-            //Verifica se a familia existe
             if (!familia) {
-                res.status(404).json({ message: 'Familia não encontrada' })
+                return res.status(404).json({ error: 'Familia não encontrada' });
             }
-            //Busca todas as pessoas relacionadas a essa familia
-            const pessoas = await pessoaRepository.find({ familia_id: id })
-            return res.status(200).json(pessoas)
+            familia.endereco = await enderecoRepository.findOne({ id: familia.endereco_id })
+            const pessoas = await pessoaRepository.find({familia_id:familia.id})
+            return res.status(200).json({familia, pessoas})
         } catch (error) {
-            return res.status(400).json(error)
+
+        }
+    }
+
+    async deleteFamilia(req: Request, res: Response): Promise<Response> {
+        const { id } = req.params;
+        const familiaRepository = getCustomRepository(FamiliaRepository)
+        const enderecoRepository = getCustomRepository(EnderecoRepository)
+        try {
+            const familia = await familiaRepository.findOne({ id })
+            await familiaRepository.delete({ id })
+            await enderecoRepository.delete({ id: familia.endereco_id })
+            return res.status(200).json({})
+        } catch (error) {
+            return res.status(404).json(error)
         }
     }
 }

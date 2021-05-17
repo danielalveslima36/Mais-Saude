@@ -15,7 +15,7 @@ class Familia {
     agente_id:string;
     @OneToOne(()=>Endereco)
     @JoinColumn({name:'endereco_id'})
-    Endereco:Endereco;
+    endereco:Endereco;
     @OneToOne(()=>Usuario)
     @JoinColumn({name:'agente_id'})
     agente:Usuario;

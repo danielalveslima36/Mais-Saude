@@ -31,7 +31,6 @@ export class Familia1619735959302 implements MigrationInterface {
                     referencedColumnNames: ['id'],
                     referencedTableName: 'Endereco',
                     columnNames: ['endereco_id'],
-                    onDelete: 'CASCADE',
                     onUpdate: 'CASCADE'
                 },
                 {
@@ -39,7 +38,6 @@ export class Familia1619735959302 implements MigrationInterface {
                     referencedColumnNames: ['id'],
                     referencedTableName: 'Usuario',
                     columnNames: ['agente_id'],
-                    onDelete: 'CASCADE',
                     onUpdate: 'CASCADE'
                 },
             ]

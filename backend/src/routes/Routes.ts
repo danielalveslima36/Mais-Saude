@@ -17,8 +17,8 @@ router.get("/usuario/:id", authMiddleware, UsuarioController.BuscarPorId)
 
 router.post('/familia/:agente_id', FamiliaController.criarFamilia)
 router.get('/familia/agente/:id', FamiliaController.listarFamiliaPorAgente)
-router.get('/familia/:id', authMiddleware, FamiliaController.buscarPorId)
-router.get('/familia/pessoas/:id', FamiliaController.listarPessoas)
+router.get('/familia/:id', FamiliaController.buscarPorId)
+router.get('/familia/delete/:id', FamiliaController.deleteFamilia)
 
 router.post('/pessoa', PessoaController.criarPessoa)
 router.get('/pessoa', PessoaController.listarPessoas)

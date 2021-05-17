@@ -78,6 +78,7 @@ export class Pessoa1619734967806 implements MigrationInterface {
                     referencedColumnNames: ['id'],
                     referencedTableName: 'Familia',
                     columnNames: ['familia_id'],
+                    onDelete: 'CASCADE',
                     onUpdate: 'CASCADE'
                 }
             ]
