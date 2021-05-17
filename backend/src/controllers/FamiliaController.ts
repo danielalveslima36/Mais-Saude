@@ -35,10 +35,11 @@ class FamiliaController {
         }
     }
 
-    async listarFamilias(req: Request, res: Response): Promise<Response> {
+    async listarFamiliaPorAgente(req: Request, res: Response): Promise<Response> {
+        const {id} = req.params
         const familiaRepository = getCustomRepository(FamiliaRepository);
         try {
-            const listaFamilias = await familiaRepository.find();
+            const listaFamilias = await familiaRepository.find({id})
             return res.status(200).json(listaFamilias);
         } catch (error) {
             return res.status(400).json(error);
