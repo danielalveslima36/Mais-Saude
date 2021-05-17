@@ -62,5 +62,16 @@ class PessoaController {
         }
         return res.status(200).json(pessoa)
     }
+
+    async deletarPessoa(req: Request, res: Response): Promise<Response> {
+        const { id } = req.params;
+        const pessoaRepository = getCustomRepository(PessoaRepository);
+        try {
+            await pessoaRepository.delete({id})
+            return res.status(200).json({})
+        } catch (error) {
+            return res.status(400).json(error)
+        }
+    }
 }
 export default new PessoaController()
