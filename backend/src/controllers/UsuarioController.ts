@@ -1,3 +1,4 @@
+import { Usuario1619733646205 } from './../database/migrations/1619733646205-Usuario';
 import { Request, Response } from "express";
 import { getCustomRepository } from "typeorm";
 import { UsuarioRepository } from "../repository/UsuarioRepository";
@@ -42,6 +43,23 @@ class UsuarioController {
             return res.status(404).json({ error: "usuario não encontrado" })
         }
         return res.status(200).json(usuario)
+    }
+
+    async AtualizarUsuario(req: Request, res: Response): Promise<Response> {
+        const { id, nome, cpf, email, senha } = req.body;
+        const usuarioRepository = getCustomRepository(UsuarioRepository)
+        try {
+            const usuario = await usuarioRepository.findOne({ id })
+            if (!usuario) {
+                return res.status(404).json({ message: 'Usuario não encontrado' })
+            }
+            await usuarioRepository.update(usuario.id, { nome, cpf, email, senha: bcryptjs.hashSync(senha) })
+            const usuarioAtualizado = await usuarioRepository.findOne({id})
+            return res.status(200).json(usuarioAtualizado);
+
+        } catch (error) {
+            return res.status(400).json(error);
+        }
     }
 }
 

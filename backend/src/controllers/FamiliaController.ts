@@ -57,8 +57,8 @@ class FamiliaController {
                 return res.status(404).json({ error: 'Familia não encontrada' });
             }
             familia.endereco = await enderecoRepository.findOne({ id: familia.endereco_id })
-            const pessoas = await pessoaRepository.find({familia_id:familia.id})
-            return res.status(200).json({familia, pessoas})
+            const pessoas = await pessoaRepository.find({ familia_id: familia.id })
+            return res.status(200).json({ familia, pessoas })
         } catch (error) {
 
         }
@@ -76,6 +76,32 @@ class FamiliaController {
         } catch (error) {
             return res.status(404).json(error)
         }
+    }
+
+    async atualizarFamilia(req: Request, res: Response): Promise<Response> {
+        const { id, nome, endereco, agente_id } = req.body;
+        const familiaRepository = getCustomRepository(FamiliaRepository)
+        const enderecoRepository = getCustomRepository(EnderecoRepository)
+        const usuarioRepository = getCustomRepository(UsuarioRepository)
+        try {
+            const familia = await familiaRepository.findOne({ id })
+            const agente = await usuarioRepository.findOne({id:agente_id})
+            if (!familia) {
+                return res.status(404).json({ message: 'Familia não encontrada' })
+            }
+            if (!agente) {
+                return res.status(404).json({ message: 'Agente não encontrado' })
+            }
+            await enderecoRepository.update(familia.endereco_id, endereco as Endereco)
+            await familiaRepository.update(familia.id, {nome, agente_id})
+            const familiaAtualizada = await familiaRepository.findOne({ id })
+            const enderecoAtualizado = await enderecoRepository.findOne({id:familia.endereco_id})
+            return res.status(400).json({familia:familiaAtualizada, endereco:enderecoAtualizado})
+
+        } catch (error) {
+            return res.status(400).json(error)
+        }
+
     }
 }
 

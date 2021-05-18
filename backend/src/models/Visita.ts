@@ -26,3 +26,5 @@ class Visita {
         }
     }
 }
+
+export {Visita}
