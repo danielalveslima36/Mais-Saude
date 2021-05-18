@@ -96,7 +96,7 @@ class FamiliaController {
             await familiaRepository.update(familia.id, {nome, agente_id})
             const familiaAtualizada = await familiaRepository.findOne({ id })
             const enderecoAtualizado = await enderecoRepository.findOne({id:familia.endereco_id})
-            return res.status(400).json({familia:familiaAtualizada, endereco:enderecoAtualizado})
+            return res.status(200).json({familia:familiaAtualizada, endereco:enderecoAtualizado})
 
         } catch (error) {
             return res.status(400).json(error)
