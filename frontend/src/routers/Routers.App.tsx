@@ -6,6 +6,7 @@ import RegisterFamily from '../pages/RegisterFamily';
 import RegisterAddress from '../pages/RegisterAddress';
 import ViewFamily from '../pages/ViewFamily';
 import RegisterPeople from '../pages/RegisterPeople';
+import CameraComponent from '../pages/Camera';
 
 const { Navigator, Screen } = createStackNavigator();
 // create a component
@@ -18,6 +19,7 @@ const RoutesApp = () => {
             <Screen name="Cadastro Endereço" component={RegisterAddress}/>
             <Screen name="Ver Família" component={ViewFamily}/>
             <Screen name="Cadastro de Integrante" component={RegisterPeople}/>
+            <Screen name="Camera" component={CameraComponent}/>            
         </Navigator>
     );
 };

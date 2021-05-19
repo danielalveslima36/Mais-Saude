@@ -3,6 +3,7 @@ import React from 'react'
 import { useState } from 'react';
 import { Alert, Button } from 'react-native';
 import { Pressable } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import { ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native';
 import { TextInput } from 'react-native';
@@ -23,11 +24,6 @@ const RegisterAddress = () => {
     const [cep, setCep] = useState("")
     const [cidade, setCidade] = useState("")
     const [estado, setEstado] = useState("")
-
-    useFocusEffect(() => {
-        // const family = route.params as IFamily
-        // setNome(route.params?.nome)
-    });
 
     function handlerCreateFamily(nome: string, rua: string, numero: string, complemento: string, cep: string, cidade: string, estado: string) {
         const data = {nome, endereco: {rua, numero, complemento, cep, cidade, estado}};
@@ -70,9 +66,9 @@ const RegisterAddress = () => {
                         maxLength={2} placeholder="UF"
                         onChangeText={setEstado} />
 
-                    <Pressable style={styles.button} onPress={()=>{ handlerCreateFamily(nome, rua, numero, complemento, cep, cidade, estado) }}>
+                    <TouchableOpacity style={styles.button} onPress={()=>{ handlerCreateFamily(nome, rua, numero, complemento, cep, cidade, estado) }}>
                         <Text style={styles.textButton}>Finalizar</Text>
-                    </Pressable>
+                    </TouchableOpacity>
                 </View>                
             </ScrollView>            
         </SafeAreaView>

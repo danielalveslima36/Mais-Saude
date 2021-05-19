@@ -1,7 +1,7 @@
-import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/core'
+import { useNavigation, useRoute } from '@react-navigation/core'
+import { useFocusEffect } from '@react-navigation/native';
 import React from 'react'
 import { useState } from 'react';
-import { Pressable } from 'react-native';
 import { FlatList } from 'react-native';
 import { TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native';
@@ -23,14 +23,14 @@ const ViewFamily = () => {
 
     const [family, setFamily] = useState<IFamily>();
     const [pessoas, setPessoas] = useState<IFamily[]>([])
-
-    API.get(`/familia/${route.params?.familiaId}`).then(response => {
-        setFamily(response.data?.familia);
-        setPessoas(response.data?.pessoas);
-    }, err => console.error(err));
+    const [quantidade, setQuantidade] = useState(0)
 
     useFocusEffect(() => {
-       
+        API.get(`/familia/${route.params?.familiaId}`).then(response => {            
+            setFamily(response.data?.familia);
+            setPessoas(response.data?.pessoas);
+            setQuantidade(response.data?.pessoas.length)
+        }).catch(erro => console.error(erro));
     });
 
     const renderItem = ({item}) => {
@@ -54,16 +54,15 @@ const ViewFamily = () => {
         <SafeAreaView style={styles.body}>
             <View style={styles.header}>
                 <Text style={styles.titleHeader}>{family?.nome}</Text>
-                <Text style={styles.subTitleHeader}>{pessoas.length} Integrantes</Text>
-                <Text></Text>
+                <Text style={styles.subTitleHeader}>{quantidade} Integrantes</Text>
             </View>
             <FlatList data={pessoas}
                 renderItem={renderItem}
                 style={styles.flatList}/>
             <View style={styles.footer}>
-                <Pressable style={styles.button} onPress={() => goToRegisterPeople()}>
+                <TouchableOpacity style={styles.button} onPress={() => goToRegisterPeople()}>
                     <Text style={styles.textButton}>Adicionar Integrante</Text>
-                </Pressable>
+                </TouchableOpacity>
             </View>
 
         </SafeAreaView>

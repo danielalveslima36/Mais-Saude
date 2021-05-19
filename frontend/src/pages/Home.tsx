@@ -1,6 +1,7 @@
+import { FontAwesome } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
-import { Pressable } from "react-native";
+import { Pressable, TouchableOpacity } from "react-native";
 import { View, StyleSheet, Text, Button } from "react-native";
 import { Divider } from "react-native-elements";
 import { ScrollView } from 'react-native-gesture-handler';

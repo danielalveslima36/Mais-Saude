@@ -13,6 +13,7 @@ import { Pressable } from 'react-native';
 import { FlatList } from 'react-native';
 import { TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native';
+import { useEffect } from 'react';
 
 const Item = ({ item, onPress }) => (
     <TouchableOpacity onPress={onPress} style={styles.card}>
@@ -29,13 +30,12 @@ const ListFamily = () => {
 
     const [families, onChangeFamilies] = useState<IFamily[]>([])
 
-    useFocusEffect(listFamily)
-
-    function listFamily() {
+    useFocusEffect(() => {
         API.get(`/familia/agente/${usuario?.id}`).then(response => {
             onChangeFamilies(response.data);
-        }, (error => console.log(error)));
-    }
+        });
+    })
+    
 
     const renderItem = ({item}) => {
         return (
@@ -60,9 +60,9 @@ const ListFamily = () => {
                 renderItem={renderItem}
                 style={styles.flatList}/>
             <View style={styles.footer}>
-                <Pressable style={styles.button} onPress={() => createFamily()}>
+                <TouchableOpacity style={styles.button} onPress={() => createFamily()}>
                     <Text style={styles.textButton}>Adicionar Família</Text>
-                </Pressable>
+                </TouchableOpacity>
             </View>
 
         </SafeAreaView>

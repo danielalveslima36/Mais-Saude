@@ -1,18 +1,29 @@
+import { FontAwesome } from '@expo/vector-icons'
 import { useNavigation, useRoute } from '@react-navigation/core'
+import { useFocusEffect } from '@react-navigation/native'
 import React from 'react'
 import { useState } from 'react'
 import { Alert, Pressable } from 'react-native'
+import { TouchableOpacity } from 'react-native'
 import { TextInput } from 'react-native'
 import { ScrollView } from 'react-native'
 import { SafeAreaView } from 'react-native'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, Image } from 'react-native'
 import API from '../services/Api'
 
 const RegisterPeople = () => {
     const navigation = useNavigation();
-    const route = useRoute();
+    const route = useRoute();    
     
     const familia_id = route.params?.familiaId;
+    const foto = route.params?.capturedPhoto
+    const [imageBase64, setImageBase64] = useState(`data:image/png;base64,${route.params?.capturedPhoto}`)
+
+    useFocusEffect(() => {
+        setImageBase64(`data:image/png;base64,${route.params?.capturedPhoto}`)
+        console.log(imageBase64)
+    })
+
     const [nome, setNome] = useState('');
     const [cpf, setCpf] = useState('');
     const [naturalidade, setNaturalidade] = useState('');
@@ -23,19 +34,23 @@ const RegisterPeople = () => {
     const [etnia, setEtnia] = useState('');
     const [isChefe, setIsChefe] = useState();
     const [tipo_sanguineo, setTipoSanguineo] = useState('');
-    const [foto, setFoto] = useState('');
+    // const [foto, setFoto] = useState("");
     const [observacoes, setObservacoes] = useState('');
     const [pai, setPai] = useState('');
     const [mae, setMae] = useState('');
 
     function handlerCreatePeople(nome, cpf, naturalidade, cartao_sus, data_nascimento, peso, altura, etnia, isChefe, tipo_sanguineo, foto, observacoes, pai, mae, familia_id) {
         const data = {nome, cpf, naturalidade, cartao_sus, data_nascimento, peso, altura, etnia, isChefe, tipo_sanguineo, foto, observacoes, pai, mae, familia_id};
+        console.log(data);
 
         API.post("/pessoa", data).then(resp => {
-            console.log(resp.data);
             Alert.alert('Adição de Integrante', 'Um novo integrante foi adicionado a família!');
             navigation.navigate('Ver Família');
         }, err => console.log(err));
+    }
+
+    function takePicture() {
+        navigation.navigate("Camera")
     }
 
     return (
@@ -43,6 +58,22 @@ const RegisterPeople = () => {
             <ScrollView>
                 <View style={styles.view}>
                     <Text style={styles.title}>Adicionar Pessoa</Text>
+                    <View style={{flex: 1}}>
+                        <Image style={{width: '100%', maxHeight:500, borderRadius: 20}}
+                                source={{uri: imageBase64}} />
+                    </View>
+                    <TouchableOpacity style={styles.button} onPress={takePicture}>
+                        { foto &&
+                            <View style={{flex: 1}}>
+                                <Image style={{width: '100%', maxHeight:500, borderRadius: 20}}
+                                        source={{uri:imageBase64}}/>
+                            </View>
+                        }
+                        {
+                            !foto && 
+                            <FontAwesome name="camera" size={23}  color="#FFF"></FontAwesome>
+                        }
+                    </TouchableOpacity>
 
                     <TextInput style={styles.input} editable
                         maxLength={255} placeholder="Nome"
@@ -58,16 +89,16 @@ const RegisterPeople = () => {
                         onChangeText={setNaturalidade} />
 
                     <TextInput style={styles.input} editable
-                        maxLength={15} placeholder="Cartão do SUS"
+                        maxLength={16} placeholder="Cartão do SUS"
                         keyboardType="number-pad"
                         onChangeText={setCartaoSus} />
 
                     <TextInput style={styles.input} editable
-                        maxLength={255} placeholder="Data de Nascimento"
+                        maxLength={10} placeholder="Data de Nascimento"
                         onChangeText={setDataNascimento} />
 
                     <TextInput style={styles.input} editable
-                        maxLength={2} placeholder="Peso"
+                        maxLength={4} placeholder="Peso"
                         keyboardType="number-pad"
                         onChangeText={setPeso} />
 
@@ -77,29 +108,29 @@ const RegisterPeople = () => {
                         onChangeText={setAltura} />
 
                     <TextInput style={styles.input} editable
-                        maxLength={2} placeholder="Etnia"
+                        maxLength={100} placeholder="Etnia"
                         onChangeText={setEtnia} />
 
                     <TextInput style={styles.input} editable
                         maxLength={2} placeholder="Tipo Sanguíneo"
-                        onChangeText={setTipoSanguineo} />
+                        onChange={e =>setTipoSanguineo} />
 
                     <TextInput style={styles.input} editable
-                        maxLength={2} placeholder="Mãe"
+                        maxLength={255} placeholder="Mãe"
                         onChangeText={setMae} />
 
                     <TextInput style={styles.input} editable
-                        maxLength={2} placeholder="Pai"
+                        maxLength={255} placeholder="Pai"
                         onChangeText={setPai} />
 
                     <TextInput style={styles.input} editable
-                        maxLength={2} placeholder="Observações"
+                        maxLength={255} placeholder="Observações"
                         onChangeText={setObservacoes} />
 
-                    <Pressable style={styles.button} 
+                    <TouchableOpacity style={styles.button} 
                         onPress={()=>{ handlerCreatePeople(nome, cpf, naturalidade, cartao_sus, data_nascimento, peso, altura, etnia, isChefe, tipo_sanguineo, foto, observacoes, pai, mae, familia_id) }}>
                         <Text style={styles.textButton}>Finalizar</Text>
-                    </Pressable>
+                    </TouchableOpacity>
                 </View>                
             </ScrollView>            
         </SafeAreaView>
